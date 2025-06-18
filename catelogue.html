@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catalogue - Virtual Rangers | Solutions VR/AR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "vr-dark": "#0a0a0f",
+              "vr-dark-blue": "#0f0f1a",
+              "vr-navy": "#1a1a2e",
+              "vr-primary": "#5B9BF3",
+              "vr-secondary": "#4A7FE7",
+              "vr-accent": "#6BA3F5",
+              "vr-cyan": "#7BB8F7",
+            },
+            fontFamily: {
+              display: ["Inter", "system-ui", "sans-serif"],
+              body: ["Inter", "system-ui", "sans-serif"],
+            },
+            animation: {
+              float: "float 6s ease-in-out infinite",
+              glow: "glow 2s ease-in-out infinite alternate",
+              "slide-up": "slideUp 0.8s ease-out",
+              "fade-in": "fadeIn 0.6s ease-out",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap");
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px) rotate(0deg);
+        }
+        50% {
+          transform: translateY(-20px) rotate(5deg);
+        }
+      }
+
+      @keyframes glow {
+        from {
+          box-shadow: 0 0 20px rgba(91, 155, 243, 0.3);
+        }
+        to {
+          box-shadow: 0 0 40px rgba(91, 155, 243, 0.6);
+        }
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translateY(50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .gradient-text {
+        background: linear-gradient(
+          135deg,
+          #5b9bf3 0%,
+          #7bb8f7 50%,
+          #6ba3f5 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .glass-effect {
+        background: rgba(15, 15, 26, 0.6);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(91, 155, 243, 0.1);
+      }
+
+      .glass-card {
+        background: rgba(15, 15, 26, 0.8);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(91, 155, 243, 0.1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .glass-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        border-color: rgba(91, 155, 243, 0.3);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3),
+          0 0 20px rgba(91, 155, 243, 0.2);
+      }
+
+      .hero-bg {
+        background: linear-gradient(
+          135deg,
+          #0a0a0f 0%,
+          #0f0f1a 30%,
+          #1a1a2e 60%,
+          #0f0f1a 100%
+        );
+        position: relative;
+      }
+
+      .hero-bg::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+            circle at 20% 80%,
+            rgba(91, 155, 243, 0.06) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(107, 163, 245, 0.04) 0%,
+            transparent 50%
+          );
+        pointer-events: none;
+      }
+
+      .tech-grid {
+        background-image: linear-gradient(
+            rgba(91, 155, 243, 0.02) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(91, 155, 243, 0.02) 1px, transparent 1px);
+        background-size: 60px 60px;
+      }
+
+      .price-tag {
+        background: linear-gradient(135deg, #5b9bf3 0%, #4a7fe7 100%);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 9999px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        display: inline-block;
+      }
+
+      .platform-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        margin: 0.125rem;
+        background: rgba(91, 155, 243, 0.1);
+        color: #5b9bf3;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        border: 1px solid rgba(91, 155, 243, 0.2);
+      }
+
+      .category-filter {
+        background: transparent;
+        border: 2px solid rgba(91, 155, 243, 0.3);
+        color: #5b9bf3;
+        padding: 0.75rem 2rem;
+        border-radius: 9999px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-weight: 600;
+      }
+
+      .category-filter:hover,
+      .category-filter.active {
+        background: linear-gradient(135deg, #5b9bf3 0%, #4a7fe7 100%);
+        color: white;
+        border-color: transparent;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(91, 155, 243, 0.3);
+      }
+
+      .search-bar {
+        background: rgba(15, 15, 26, 0.8);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(91, 155, 243, 0.2);
+        border-radius: 50px;
+        padding: 1rem 1.5rem;
+        color: white;
+        width: 100%;
+        max-width: 500px;
+        transition: all 0.3s ease;
+      }
+
+      .search-bar:focus {
+        outline: none;
+        border-color: rgba(91, 155, 243, 0.5);
+        box-shadow: 0 0 20px rgba(91, 155, 243, 0.2);
+      }
+
+      .product-card {
+        background: rgba(15, 15, 26, 0.8);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(91, 155, 243, 0.1);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .product-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #5b9bf3, transparent);
+        transition: left 0.5s ease;
+      }
+
+      .product-card:hover::before {
+        left: 100%;
+      }
+
+      .product-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        border-color: rgba(91, 155, 243, 0.3);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3),
+          0 0 20px rgba(91, 155, 243, 0.2);
+      }
+
+      .stats-counter {
+        font-size: 3rem;
+        font-weight: 900;
+        background: linear-gradient(
+          135deg,
+          #5b9bf3 0%,
+          #7bb8f7 50%,
+          #6ba3f5 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .floating-icon {
+        animation: float 6s ease-in-out infinite;
+      }
+
+      .floating-icon:nth-child(2) {
+        animation-delay: -2s;
+      }
+      .floating-icon:nth-child(3) {
+        animation-delay: -4s;
+      }
+
+      .scan-line {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 2px;
+        height: 100%;
+        background: linear-gradient(180deg, transparent, #5b9bf3, transparent);
+        animation: scan 4s linear infinite;
+      }
+
+      @keyframes scan {
+        0% {
+          left: -100%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+
+      .feature-highlight {
+        background: rgba(91, 155, 243, 0.1);
+        border: 1px solid rgba(91, 155, 243, 0.2);
+        border-radius: 0.5rem;
+        padding: 0.5rem 1rem;
+        margin: 0.25rem 0;
+        font-size: 0.875rem;
+        color: #5b9bf3;
+      }
+    </style>
+  </head>
+  <body class="font-body bg-vr-dark text-white overflow-x-hidden">
+    <!-- Navigation -->
+    <nav
+      class="fixed top-0 w-full z-50 glass-effect transition-all duration-500"
+      id="navbar"
+    >
+      <div class="container mx-auto px-4 sm:px-6 py-4">
+        <div class="flex items-center justify-between">
+          <!-- Logo -->
+          <div class="flex items-center space-x-3">
+            <img
+              src="./logo.png"
+              alt="Virtual Rangers Logo"
+              class="h-12 sm:h-16 w-auto mr-10 absolute"
+            />
+          </div>
+
+          <!-- Desktop Menu -->
+          <div class="hidden lg:flex items-center space-x-8">
+            <a
+              href="/landing-page.html"
+              class="hover:text-vr-primary transition-colors duration-300 font-medium relative group"
+            >
+              HOME
+              <span
+                class="absolute -bottom-1 left-0 w-0 h-0.5 bg-vr-primary transition-all duration-300 group-hover:w-full"
+              ></span>
+            </a>
+            <a
+              href="/catelogue.html"
+              class="hover:text-vr-primary transition-colors duration-300 font-medium relative group"
+            >
+              CATALOGUE
+              <span
+                class="absolute -bottom-1 left-0 w-0 h-0.5 bg-vr-primary transition-all duration-300 group-hover:w-full"
+              ></span>
+            </a>
+            <a
+              href="#formation"
+              class="hover:text-vr-primary transition-colors duration-300 font-medium relative group"
+            >
+              Formation
+              <span
+                class="absolute -bottom-1 left-0 w-0 h-0.5 bg-vr-primary transition-all duration-300 group-hover:w-full"
+              ></span>
+            </a>
+            <a
+              href="#evenementiel"
+              class="hover:text-vr-primary transition-colors duration-300 font-medium relative group"
+            >
+              Événementiel
+              <span
+                class="absolute -bottom-1 left-0 w-0 h-0.5 bg-vr-primary transition-all duration-300 group-hover:w-full"
+              ></span>
+            </a>
+            <a
+              href="#contact"
+              class="text-vr-white px-6 py-2 rounded-full font-semibold"
+              style="
+                background: linear-gradient(
+                  90deg,
+                  #3273f6 0%,
+                  #64d1fa 50%,
+                  #7e75f0 100%
+                );
+              "
+            >
+              Contact
+            </a>
+            <button
+              id="lang-toggle"
+              class="text-sm font-medium border border-vr-primary/50 text-vr-primary px-3 py-1 rounded hover:bg-vr-primary/10 transition-all duration-300"
+            >
+              EN
+            </button>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <button
+            type="button"
+            class="lg:hidden text-vr-white hover:text-vr-primary transition-colors duration-300"
+            id="mobile-menu-btn"
+          >
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div class="lg:hidden mt-4 hidden" id="mobile-menu">
+          <div class="flex flex-col space-y-4 pb-4">
+            <a
+              href="#home"
+              class="hover:text-vr-primary transition-colors duration-300 font-medium"
+              >HOME</a
+            >
+            <a
+              href="#catalogue"
+              class="hover:text-vr-primary transition-colors duration-300 font-medium"
+              >CATALOGUE</a
+            >
+            <a
+              href="#formation"
+              class="hover:text-vr-primary transition-colors duration-300 font-medium"
+              >Formation</a
+            >
+            <a
+              href="#evenementiel"
+              class="hover:text-vr-primary transition-colors duration-300 font-medium"
+              >Événementiel</a
+            >
+            <a
+              href="#contact"
+              class="hover:text-vr-primary transition-colors duration-300 font-medium"
+              >Contact</a
+            >
+            <button
+              type="button"
+              id="lang-toggle-mobile"
+              class="text-sm font-medium border border-vr-primary/50 text-vr-primary px-3 py-1 rounded w-fit"
+            >
+              EN
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Category Filters -->
+    <section class="py-16 mt-16 bg-vr-dark">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-black mb-8">
+            Filtrer par <span class="gradient-text">catégorie</span>
+          </h2>
+
+          <div class="flex flex-wrap justify-center gap-4">
+            <button class="category-filter active" data-category="all">
+              <i class="fas fa-th-large mr-2"></i>Toutes les solutions
+            </button>
+            <button class="category-filter" data-category="formation">
+              <i class="fas fa-graduation-cap mr-2"></i>Formation
+            </button>
+            <button class="category-filter" data-category="evenementiel">
+              <i class="fas fa-calendar-alt mr-2"></i>Événementiel
+            </button>
+            <button class="category-filter" data-category="serious-game">
+              <i class="fas fa-gamepad mr-2"></i>Serious Game
+            </button>
+            <button class="category-filter" data-category="sante">
+              <i class="fas fa-heart mr-2"></i>Santé & Bien-être
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Products Grid -->
+    <section id="catalogue" class="py-16 bg-vr-dark-blue tech-grid">
+      <div class="container mx-auto px-6">
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          id="products-grid"
+        >
+          <!-- Simulateur Industriel -->
+          <div
+            class="product-card"
+            data-category="formation"
+            data-price="15000"
+          >
+            <div class="flex items-start justify-between mb-6">
+              <div
+                class="w-16 h-16 bg-gradient-to-br from-vr-primary to-vr-secondary rounded-2xl flex items-center justify-center floating-icon"
+              >
+                <i class="fas fa-industry text-white text-2xl"></i>
+              </div>
+              <span class="price-tag">15 000€ HT</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-4">Simulateur Industriel</h3>
+            <p class="text-gray-300 mb-6 leading-relaxed">
+              Transformez vos procédures industrielles en formations immersives
+              avec notre simulateur en Réalité Virtuelle conçu par Virtual
+              Rangers. Idéal pour former vos équipes en toute sécurité.
+            </p>
+
+            <div class="mb-6">
+              <div class="feature-highlight">
+                ✓ Environnement industriel réaliste
+              </div>
+              <div class="feature-highlight">✓ Formation sécurisée</div>
+              <div class="feature-highlight">✓ Suivi des performances</div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="platform-badge">VR</span>
+            </div>
+
+            <button
+              class="w-full bg-gradient-to-r from-vr-primary to-vr-secondary text-white py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-vr-primary/25 transition-all duration-300"
+            >
+              <i class="fas fa-info-circle mr-2"></i>En savoir plus
+            </button>
+          </div>
+
+          <!-- Prise de Parole en Public -->
+          <div class="product-card" data-category="formation" data-price="1000">
+            <div class="flex items-start justify-between mb-6">
+              <div
+                class="w-16 h-16 bg-gradient-to-br from-vr-accent to-vr-cyan rounded-2xl flex items-center justify-center floating-icon"
+              >
+                <i class="fas fa-microphone text-white text-2xl"></i>
+              </div>
+              <span class="price-tag">1 000€ HT</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-4">Prise de Parole en Public</h3>
+            <p class="text-gray-300 mb-6 leading-relaxed">
+              Améliorez la confiance et les compétences de vos collaborateurs
+              avec notre simulateur VR de prise de parole. Entraînez-vous dans
+              des environnements réalistes.
+            </p>
+
+            <div class="mb-6">
+              <div class="feature-highlight">✓ Salle de réunion virtuelle</div>
+              <div class="feature-highlight">✓ Environnement de conférence</div>
+              <div class="feature-highlight">✓ Simulation d'entretien</div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="platform-badge">VR</span>
+              <span class="platform-badge">PC</span>
+            </div>
+
+            <button
+              class="w-full bg-gradient-to-r from-vr-accent to-vr-cyan text-white py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-vr-accent/25 transition-all duration-300"
+            >
+              <i class="fas fa-info-circle mr-2"></i>En savoir plus
+            </button>
+          </div>
+
+          <!-- Évacuation Incendie -->
+          <div
+            class="product-card"
+            data-category="formation"
+            data-price="12000"
+          >
+            <div class="flex items-start justify-between mb-6">
+              <div
+                class="w-16 h-16 bg-gradient-to-br from-red-500 to-orange-500 rounded-2xl flex items-center justify-center floating-icon"
+              >
+                <i class="fas fa-fire-extinguisher text-white text-2xl"></i>
+              </div>
+              <span class="price-tag">12 000€ HT</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-4">Évacuation Incendie</h3>
+            <p class="text-gray-300 mb-6 leading-relaxed">
+              Formez vos équipes à réagir en cas d'incendie avec une simulation
+              immersive. Sans risque réel, les apprenants vivent des scénarios
+              réalistes.
+            </p>
+
+            <div class="mb-6">
+              <div class="feature-highlight">✓ Scénarios réalistes</div>
+              <div class="feature-highlight">✓ Formation sans risque</div>
+              <div class="feature-highlight">
+                ✓ Apprentissage des bons réflexes
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="platform-badge">VR</span>
+            </div>
+
+            <button
+              class="w-full bg-gradient-to-r from-red-500 to-orange-500 text-white py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-red-500/25 transition-all duration-300"
+            >
+              <i class="fas fa-info-circle mr-2"></i>En savoir plus
+            </button>
+          </div>
+
+          <!-- Chasse aux Risques -->
+          <div class="product-card" data-category="formation" data-price="1500">
+            <div class="flex items-start justify-between mb-6">
+              <div
+                class="w-16 h-16 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl flex items-center justify-center floating-icon"
+              >
+                <i class="fas fa-search text-white text-2xl"></i>
+              </div>
+              <span class="price-tag">1 500€ HT</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-4">Chasse aux Risques</h3>
+            <p class="text-gray-300 mb-6 leading-relaxed">
+              Sensibilisez vos collaborateurs aux dangers du terrain avec une
+              chasse aux risques immersive en VR. Identifiez les anomalies,
+              adoptez les bons comportements.
+            </p>
+
+            <div class="mb-6">
+              <div class="feature-highlight">✓ Identification des risques</div>
+              <div class="feature-highlight">✓ Sensibilisation efficace</div>
+              <div class="feature-highlight">✓ Réduction des accidents</div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="platform-badge">VR</span>
+              <span class="platform-badge">PC</span>
+              <span class="platform-badge">Mobile</span>
+              <span class="platform-badge">Web</span>
+            </div>
+
+            <button
+              class="w-full bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-yellow-500/25 transition-all duration-300"
+            >
+              <i class="fas fa-info-circle mr-2"></i>En savoir plus
+            </button>
+          </div>
+
+          <!-- E-Learning Quiz -->
+          <div class="product-card" data-category="formation" data-price="1500">
+            <div class="flex items-start justify-between mb-6">
+              <div
+                class="w-16 h-16 bg-gradient-to-br from-green-500 to-teal-500 rounded-2xl flex items-center justify-center floating-icon"
+              >
+                <i class="fas fa-question-circle text-white text-2xl"></i>
+              </div>
+              <span class="price-tag">1 500€ HT</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-4">E-Learning Quiz</h3>
+            <p class="text-gray-300 mb-6 leading-relaxed">
+              Proposez des parcours d'apprentissage interactifs avec des quiz
+              e-learning sur mesure. Renforcez les connaissances grâce à des
+              contenus courts et gamifiés.
+            </p>
+
+            <div class="mb-6">
+              <div class="feature-highlight">✓ Parcours interactifs</div>
+              <div class="feature-highlight">✓ Contenus gamifiés</div>
+              <div class="feature-highlight">✓ Évaluation des acquis</div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="platform-badge">VR</span>
+              <span class="platform-badge">PC</span>
+              <span class="platform-badge">Mobile</span>
+              <span class="platform-badge">Web</span>
+            </div>
+
+            <button
+              class="w-full bg-gradient-to-r from-green-500 to-teal-500 text-white py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-green-500/25 transition-all duration-300"
+            >
+              <i class="fas fa-info-circle mr-2"></i>En savoir plus
+            </button>
+          </div>
+
+          <!-- Plateforme Analytique -->
+          <div class="product-card" data-category="formation" data-price="5000">
+            <div class="flex items-start justify-between mb-6">
+              <div
+                class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center floating-icon"
+              >
+                <i class="fas fa-chart-line text-white text-2xl"></i>
+              </div>
+              <span class="price-tag">5 000€ HT</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-4">Plateforme Analytique</h3>
+            <p class="text-gray-300 mb-6 leading-relaxed">
+              Centralisez et analysez les données de vos formations VR/AR avec
+              notre plateforme analytique. Optimisez vos dispositifs
+              pédagogiques grâce à des indicateurs clés.
+            </p>
+
+            <div class="mb-6">
+              <div class="feature-highlight">✓ Centralisation des données</div>
+              <div class="feature-highlight">✓ Indicateurs clés</div>
+              <div class="feature-highlight">✓ Optimisation pédagogique</div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="platform-badge">Web</span>
+            </div>
+
+            <button
+              class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+            >
+              <i class="fas fa-info-circle mr-2"></i>En savoir plus
+            </button>
+          </div>
+
+          <!-- Escape Game -->
+          <div
+            class="product-card"
+            data-category="serious-game"
+            data-price="12000"
+          >
+            <div class="flex items-start justify-between mb-6">
+              <div
+                class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl flex items-center justify-center floating-icon"
+              >
+                <i class="fas fa-key text-white text-2xl"></i>
+              </div>
+              <span class="price-tag">12 000€ HT</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-4">Serious Game Escape Game</h3>
+            <p class="text-gray-300 mb-6 leading-relaxed">
+              Stimulez la collaboration et la réflexion de vos équipes avec un
+              Escape Game en VR sur mesure. Résolvez des énigmes, déjouez les
+              pièges et renforcez l'esprit d'équipe.
+            </p>
+
+            <div class="mb-6">
+              <div class="feature-highlight">✓ Collaboration d'équipe</div>
+              <div class="feature-highlight">✓ Énigmes sur mesure</div>
+              <div class="feature-highlight">
+                ✓ Renforcement de l'esprit d'équipe
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="platform-badge">VR</span>
+              <span class="platform-badge">PC</span>
+              <span class="platform-badge">Mobile</span>
+            </div>
+
+            <button
+              class="w-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-indigo-500/25 transition-all duration-300"
+            >
+              <i class="fas fa-info-circle mr-2"></i>En savoir plus
+            </button>
+          </div>
+
+          <!-- Jeu éducatif -->
+          <div
+            class="product-card"
+            data-category="serious-game"
+            data-price="1200"
+          >
+            <div class="flex items-start justify-between mb-6">
+              <div
+                class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center floating-icon"
+              >
+                <i class="fas fa-gamepad text-white text-2xl"></i>
+              </div>
+              <span class="price-tag">1 200€ HT</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-4">Jeu éducatif</h3>
+            <p class="text-gray-300 mb-6 leading-relaxed">
+              Transformez l'apprentissage en expérience engageante avec un jeu
+              éducatif en VR ou sur écran. Idéal pour sensibiliser, former ou
+              vulgariser des notions complexes.
+            </p>
+
+            <div class="mb-6">
+              <div class="feature-highlight">✓ Apprentissage engageant</div>
+              <div class="feature-highlight">
+                ✓ Vulgarisation de notions complexes
+              </div>
+              <div class="feature-highlight">✓ Sensibilisation efficace</div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="platform-badge">VR</span>
+              <span class="platform-badge">PC</span>
+              <span class="platform-badge">Mobile</span>
+              <span class="platform-badge">Web</span>
+              <span class="platform-badge">Borne</span>
+            </div>
+
+            <button
+              class="w-full bg-gradient-to-r from-blue-500 to-cyan-500 text-white py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300"
+            >
+              <i class="fas fa-info-circle mr-2"></i>En savoir plus
+            </button>
+          </div>
+
+          <!-- Bien-être -->
+          <div class="product-card" data-category="sante" data-price="2500">
+            <div class="flex items-start justify-between mb-6">
+              <div
+                class="w-16 h-16 bg-gradient-to-br from-teal-500 to-green-500 rounded-2xl flex items-center justify-center floating-icon"
+              >
+                <i class="fas fa-heart text-white text-2xl"></i>
+              </div>
+              <span class="price-tag">2 500€ HT</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-4">Bien-être</h3>
+            <p class="text-gray-300 mb-6 leading-relaxed">
+              Accompagnez les patients pendant des soins médicaux avec une
+              expérience VR apaisante. Réduisez l'anxiété et améliorez leur
+              confort.
+            </p>
+
+            <div class="mb-6">
+              <div class="feature-highlight">✓ Réduction du stress</div>
+              <div class="feature-highlight">
+                ✓ Diminution de la douleur perçue
+              </div>
+              <div class="feature-highlight">
+                ✓ Amélioration de l'expérience patient
+              </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="platform-badge">VR</span>
+            </div>
+
+            <button
+              class="w-full bg-gradient-to-r from-teal-500 to-green-500 text-white py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-teal-500/25 transition-all duration-300"
+            >
+              <i class="fas fa-info-circle mr-2"></i>En savoir plus
+            </button>
+          </div>
+
+          <!-- VR Sensations -->
+          <div
+            class="product-card"
+            data-category="evenementiel"
+            data-price="900"
+          >
+            <div class="flex items-start justify-between mb-6">
+              <div
+                class="w-16 h-16 bg-gradient-to-br from-red-500 to-pink-500 rounded-2xl flex items-center justify-center floating-icon"
+              >
+                <i class="fas fa-bolt text-white text-2xl"></i>
+              </div>
+              <span class="price-tag">900€ HT</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-4">VR Sensations</h3>
+            <p class="text-gray-300 mb-6 leading-relaxed">
+              Offrez des expériences VR spectaculaires avec notre pack "VR
+              Sensations" incluant plusieurs applications à sensations fortes.
+              Idéal pour les événements tout public.
+            </p>
+
+            <div class="mb-6">
+              <div class="feature-highlight">✓ La poutre / VR Horror Room</div>
+              <div class="feature-highlight">
+                ✓ CornichOn / Téléphone au volant
+              </div>
+              <div class="feature-highlight">✓ Car Crash VR</div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="platform-badge">VR</span>
+            </div>
+
+            <button
+              class="w-full bg-gradient-to-r from-red-500 to-pink-500 text-white py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-red-500/25 transition-all duration-300"
+            >
+              <i class="fas fa-info-circle mr-2"></i>En savoir plus
+            </button>
+          </div>
+
+          <!-- VR Compétition -->
+          <div
+            class="product-card"
+            data-category="evenementiel"
+            data-price="900"
+          >
+            <div class="flex items-start justify-between mb-6">
+              <div
+                class="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center floating-icon"
+              >
+                <i class="fas fa-trophy text-white text-2xl"></i>
+              </div>
+              <span class="price-tag">900€ HT</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-4">VR Compétition</h3>
+            <p class="text-gray-300 mb-6 leading-relaxed">
+              Transformez votre événement en terrain de jeu compétitif ! Les
+              participants s'affrontent sur des mini-jeux VR courts et rythmés,
+              seul ou en équipe.
+            </p>
+
+            <div class="mb-6">
+              <div class="feature-highlight">✓ Mini-jeux compétitifs</div>
+              <div class="feature-highlight">✓ Help Me Doc</div>
+              <div class="feature-highlight">✓ Tennis on the Moon</div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="platform-badge">VR</span>
+            </div>
+
+            <button
+              class="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-orange-500/25 transition-all duration-300"
+            >
+              <i class="fas fa-info-circle mr-2"></i>En savoir plus
+            </button>
+          </div>
+
+          <!-- VR Aventure -->
+          <div
+            class="product-card"
+            data-category="evenementiel"
+            data-price="900"
+          >
+            <div class="flex items-start justify-between mb-6">
+              <div
+                class="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center floating-icon"
+              >
+                <i class="fas fa-compass text-white text-2xl"></i>
+              </div>
+              <span class="price-tag">900€ HT</span>
+            </div>
+
+            <h3 class="text-2xl font-bold mb-4">VR Aventure</h3>
+            <p class="text-gray-300 mb-6 leading-relaxed">
+              Faites vivre une quête immersive avec notre aventure en VR.
+              Résolvez des énigmes, explorez des mondes et surmontez des défis
+              dans un format captivant.
+            </p>
+
+            <div class="mb-6">
+              <div class="feature-highlight">✓ CHL03 / Visite mine</div>
+              <div class="feature-highlight">✓ Food for all</div>
+              <div class="feature-highlight">✓ Quêtes immersives</div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mb-6">
+              <span class="platform-badge">VR</span>
+            </div>
+
+            <button
+              class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-emerald-500/25 transition-all duration-300"
+            >
+              <i class="fas fa-info-circle mr-2"></i>En savoir plus
+            </button>
+          </div>
+        </div>
+
+        <!-- No Results Message -->
+        <div id="no-results" class="text-center py-16 hidden">
+          <div
+            class="w-24 h-24 bg-gradient-to-br from-vr-primary to-vr-secondary rounded-full flex items-center justify-center mx-auto mb-6"
+          >
+            <i class="fas fa-search text-white text-3xl"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4">Aucun résultat trouvé</h3>
+          <p class="text-gray-300 mb-6">
+            Essayez de modifier vos critères de recherche ou de filtrage.
+          </p>
+          <button
+            class="bg-gradient-to-r from-vr-primary to-vr-secondary text-white px-6 py-3 rounded-full font-semibold"
+            onclick="resetFilters()"
+          >
+            Réinitialiser les filtres
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-br from-vr-primary to-vr-secondary">
+      <div class="container mx-auto px-6 text-center">
+        <div class="max-w-4xl mx-auto">
+          <h2 class="text-4xl md:text-5xl font-black mb-6 text-white">
+            Besoin d'une solution sur mesure ?
+          </h2>
+          <p class="text-xl text-white/90 mb-8 leading-relaxed">
+            Nos experts sont là pour vous accompagner dans le choix et la
+            personnalisation de vos solutions VR/AR.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              class="bg-white text-vr-primary px-8 py-4 rounded-full font-bold text-lg hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+            >
+              <i class="fas fa-calendar-alt mr-2"></i>
+              Planifier une consultation
+            </button>
+            <button
+              class="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:text-vr-primary transition-all duration-300 hover:-translate-y-1"
+            >
+              <i class="fas fa-download mr-2"></i>
+              Télécharger le catalogue
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-vr-dark py-16">
+      <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div class="md:col-span-2">
+            <div class="flex items-center space-x-3 mb-6">
+              <div
+                class="w-10 h-10 bg-gradient-to-br from-vr-primary to-vr-secondary rounded-lg flex items-center justify-center"
+              >
+                <i class="fas fa-vr-cardboard text-white text-lg"></i>
+              </div>
+              <span class="text-xl font-bold gradient-text"
+                >Virtual Rangers</span
+              >
+            </div>
+            <p class="text-gray-400 mb-6 max-w-md">
+              Experts en réalité virtuelle et augmentée depuis 2017. Nous créons
+              des expériences immersives qui transforment la formation et
+              l'apprentissage.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="#"
+                class="text-gray-400 hover:text-vr-primary transition-colors duration-300"
+              >
+                <i class="fab fa-linkedin text-xl"></i>
+              </a>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-vr-primary transition-colors duration-300"
+              >
+                <i class="fab fa-twitter text-xl"></i>
+              </a>
+              <a
+                href="#"
+                class="text-gray-400 hover:text-vr-primary transition-colors duration-300"
+              >
+                <i class="fab fa-facebook text-xl"></i>
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-bold mb-4 text-vr-primary">Solutions</h4>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors duration-300"
+                  >Formation VR</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors duration-300"
+                  >Serious Games</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors duration-300"
+                  >Événementiel</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-white transition-colors duration-300"
+                  >Santé & Bien-être</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-bold mb-4 text-vr-primary">Contact</h4>
+            <ul class="space-y-2">
+              <li class="text-gray-400">
+                <i class="fas fa-envelope mr-2 text-vr-primary"></i>
+                contact@virtualrangers.com
+              </li>
+              <li class="text-gray-400">
+                <i class="fas fa-phone mr-2 text-vr-primary"></i>
+                +33 1 23 45 67 89
+              </li>
+              <li class="text-gray-400">
+                <i class="fas fa-map-marker-alt mr-2 text-vr-primary"></i>
+                Paris, France
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-700 pt-8 text-center">
+          <p class="text-gray-400">
+            © 2024 Virtual Rangers. Tous droits réservés.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Language toggle functionality
+      const langToggle = document.getElementById("lang-toggle");
+      let currentLang = "fr";
+
+      langToggle?.addEventListener("click", function () {
+        currentLang = currentLang === "fr" ? "en" : "fr";
+        this.textContent = currentLang === "fr" ? "EN" : "FR";
+      });
+
+      // Search functionality
+      const searchInput = document.getElementById("search-input");
+      const productsGrid = document.getElementById("products-grid");
+      const noResults = document.getElementById("no-results");
+      const productCards = document.querySelectorAll(".product-card");
+
+      searchInput?.addEventListener("input", function () {
+        const searchTerm = this.value.toLowerCase();
+        filterProducts();
+      });
+
+      // Category filtering
+      const categoryFilters = document.querySelectorAll(".category-filter");
+      let activeCategory = "all";
+
+      categoryFilters.forEach((filter) => {
+        filter.addEventListener("click", function () {
+          categoryFilters.forEach((f) => f.classList.remove("active"));
+          this.classList.add("active");
+          activeCategory = this.getAttribute("data-category");
+          filterProducts();
+        });
+      });
+
+      function filterProducts() {
+        const searchTerm = searchInput.value.toLowerCase();
+        let visibleCount = 0;
+
+        productCards.forEach((card) => {
+          const category = card.getAttribute("data-category");
+          const title = card.querySelector("h3").textContent.toLowerCase();
+          const description = card.querySelector("p").textContent.toLowerCase();
+
+          const matchesCategory =
+            activeCategory === "all" || category === activeCategory;
+          const matchesSearch =
+            searchTerm === "" ||
+            title.includes(searchTerm) ||
+            description.includes(searchTerm);
+
+          if (matchesCategory && matchesSearch) {
+            card.style.display = "block";
+            card.style.animation = "fadeIn 0.5s ease-out";
+            visibleCount++;
+          } else {
+            card.style.display = "none";
+          }
+        });
+
+        // Show/hide no results message
+        if (visibleCount === 0) {
+          noResults.classList.remove("hidden");
+          productsGrid.style.display = "none";
+        } else {
+          noResults.classList.add("hidden");
+          productsGrid.style.display = "grid";
+        }
+      }
+
+      function resetFilters() {
+        searchInput.value = "";
+        activeCategory = "all";
+        categoryFilters.forEach((f) => f.classList.remove("active"));
+        categoryFilters[0].classList.add("active");
+        filterProducts();
+      }
+
+      // Smooth scrolling for navigation links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      });
+
+      // Navbar background on scroll
+      window.addEventListener("scroll", function () {
+        const navbar = document.querySelector("nav");
+        if (window.scrollY > 100) {
+          navbar.style.background = "rgba(10, 10, 15, 0.95)";
+        } else {
+          navbar.style.background = "rgba(15, 15, 26, 0.6)";
+        }
+      });
+
+      // Intersection Observer for animations
+      const observerOptions = {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      };
+
+      const observer = new IntersectionObserver(function (entries) {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
+          }
+        });
+      }, observerOptions);
+
+      // Observe product cards for animation
+      productCards.forEach((card) => {
+        card.style.opacity = "0";
+        card.style.transform = "translateY(30px)";
+        card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(card);
+      });
+
+      // Price sorting functionality (optional)
+      function sortByPrice(ascending = true) {
+        const cardsArray = Array.from(productCards);
+        cardsArray.sort((a, b) => {
+          const priceA = parseInt(a.getAttribute("data-price"));
+          const priceB = parseInt(b.getAttribute("data-price"));
+          return ascending ? priceA - priceB : priceB - priceA;
+        });
+
+        cardsArray.forEach((card) => {
+          productsGrid.appendChild(card);
+        });
+      }
+    </script>
+  </body>
+</html>
